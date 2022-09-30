@@ -2,6 +2,7 @@ let MODALQT = 1;
 const qS = (el) => document.querySelector(el);
 const qSAll = (el) => document.querySelectorAll(el);
 
+//listagem das pizzas
 pizzaJson.map((pizza, i) => {
   const pizzaItem = qS('.pizza-item').cloneNode(true);
   const pizzaQS = (el) => pizzaItem.querySelector(el);
@@ -38,4 +39,19 @@ pizzaJson.map((pizza, i) => {
     }, 400)
   });
   qS('.pizza-area').append(pizzaItem);
+});
+
+//evento do modal
+
+const closeModal = () => {
+  qS('.pizzaWindowArea').style.opacity = 0;
+  setTimeout(() => {
+    qS('.pizzaWindowArea').style.display = 'none';
+  }, 400)
+};
+
+const bntClose = qSAll('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton');
+
+bntClose.forEach((close) => {
+  close.addEventListener('click', closeModal);
 });

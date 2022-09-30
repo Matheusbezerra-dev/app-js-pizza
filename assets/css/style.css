@@ -395,10 +395,6 @@ h1 {
     flex-direction: column;
   }
 
-  .pizza-area {
-    display: block;
-  }
-
   .pizza-item {
     max-width: 100%;
   }
