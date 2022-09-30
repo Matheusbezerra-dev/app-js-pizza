@@ -393,6 +393,7 @@ h1 {
 @media (max-width:840px) {
   body {
     flex-direction: column;
+    
   }
 
   .pizza-item {
