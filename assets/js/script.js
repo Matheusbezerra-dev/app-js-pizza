@@ -98,15 +98,74 @@ qS('.pizzaInfo--addButton').addEventListener('click', () => {
   closeModal();
 });
 
+qS('.menu-openner').addEventListener('click', () => {
+  if (carItem.length > 0) {     
+    qS('aside').style.left = '0';
+  }
+});
+
+qS('.menu-closer').addEventListener('click', () => {
+  qS('aside').style.left = '100vw';
+});
+
 const updateCart = () => {
-  if (carItem.length> 0) {
-    qS('aside').classList.add('show')
+  qS('.menu-openner span').innerHTML = carItem.length;
+
+  if (carItem.length > 0) {
+    qS('aside').classList.add('show');
+    qS('.cart').innerHTML = '';
+
+    let subtotal = 0;
+    let desconto = 0;
+    let total = 0;
+
     for (let i in carItem) {
       let pizzaItem = pizzaJson.find((item) => item.id == carItem[i].id);
-      
-      console.log(pizzaItem);
+      subtotal = (subtotal + pizzaItem.price) * carItem[i].qt;
+      let car = qS('.models .cart--item').cloneNode(true);
+      let pizzaSize;
+      switch(carItem[i].size){
+        case 0:
+          pizzaSize = 'P';
+          break;
+        case 1: 
+          pizzaSize = 'M';
+          break;
+        case 2: 
+          pizzaSize = 'G';
+          break;
+      }
+
+      let pizzaName = `${pizzaItem.name} (${pizzaSize})`
+
+      car.querySelector('img').src = pizzaItem.img;
+      car.querySelector('.cart--item-nome').innerHTML = pizzaName;
+      car.querySelector('.cart--item--qt').innerHTML = carItem[i].qt;
+      car.querySelector('.cart--item-qtsub').addEventListener('click', () => {
+        if (carItem[i].qt > 1) {
+          carItem[i].qt = carItem[i].qt - 1
+        } else {
+          carItem.splice(i, 1)
+        }        
+        updateCart();
+      });
+
+      car.querySelector('.cart--item-qtsum').addEventListener('click', () => {
+        carItem[i].qt = carItem[i].qt + 1;
+        updateCart();
+      });
+
+      qS('.cart').append(car)
     }
+    
+    desconto = subtotal * 0.1;
+    total = subtotal - desconto;
+    qS('.subtotal span:last-child').innerHTML =`R$ ${subtotal.toFixed(2)}`;
+    qS('.desconto span:last-child').innerHTML =`R$ ${desconto.toFixed(2)}`;
+    qS('.total span:last-child').innerHTML =`R$ ${total.toFixed(2)}`;
+
   } else {
     qS('aside').classList.remove('show') 
+    qS('aside').style.left = '100vw'
   }
 };
